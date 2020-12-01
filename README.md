@@ -1,2 +1,3 @@
-# RN-Project-03
-CHAT UYGULAMASI
+# CHAT UYGULAMASI
+React Native Project-7
+
