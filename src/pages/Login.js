@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,22 +11,27 @@ import {
 
 import {authStyle} from './styles';
 import {Input, Button} from '../components';
+import {resolveAuthError} from '../functions';
 import auth from '@react-native-firebase/auth';
-import { resolveAuthError } from '../functions';
 
 const Login = (props) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  async function login(){
+  async function login() {
     // auth()
-    // .signInWithEmailAndPassword(email,password)
-    // .then(()=> alert("OK"))
-    // .catch((err)=> Alert.alert("Chat", resolveAuthError(err.code)))
+    //   .signInWithEmailAndPassword(email, password)
+    //   .then(() => alert("OK"))
+    //   .catch((err) => Alert.alert("ClarusChat", resolveAuthError(err.code)));
     try {
-      await auth().signInWithEmailAndPassword(email,password)
+      if (email === '' || password === '') {
+        Alert.alert('ClarusChat', resolveAuthError('auth/null-value'));
+      } else {
+        await auth().signInWithEmailAndPassword(email, password);
+        alert("OK")
+      }
     } catch (error) {
-      Alert.alert("Chat", resolveAuthError(error.code));
+      Alert.alert('ClarusChat', resolveAuthError(error.code));
     }
   }
 
@@ -34,38 +39,36 @@ const Login = (props) => {
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView style={{flex: 1, backgroundColor: '#cfd8dc'}}>
         <ScrollView contentContainerStyle={{flex: 1}}>
-
           <View style={authStyle.container}>
             <Image
               style={authStyle.logo}
-              source={require("../assets/logo.jpeg")}
+              source={require('../assets/logo.jpeg')}
             />
-            <Text style={authStyle.logoText}>CHAT</Text>
+            <Text style={authStyle.logoText}>ClarusChat</Text>
           </View>
-
-          <View style={{ flex:1 }}>
-
+          <View style={{flex: 1}}>
             <Input
               inputProps={{
-                placeholder:"Type your email adress...",
-                keyboardType: "email-address"
+                placeholder: 'Type your email address..',
+                keyboardType: 'email-address',
               }}
-              onType={value => setEmail(value)}
+              onType={(value) => setEmail(value)}
             />
-
             <Input
               inputProps={{
-                placeholder:"Type your password..",
-                secureTextEntry: true
+                placeholder: 'Type your password..',
+                secureTextEntry: true,
               }}
-              onType={value => setPassword(value)}
+              onType={(value) => setPassword(value)}
             />
 
-            <Button title="Sign In" onPress={()=> login()} />
-            <Button title="Sign Up" noBorder onPress={()=> props.navigation.navigate("Sign")}/>
-            
+            <Button title="Sign In" onPress={() => login()} />
+            <Button
+              title="Sign Up"
+              noBorder
+              onPress={() => props.navigation.navigate('Sign')}
+            />
           </View>
-
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
